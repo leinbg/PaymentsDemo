@@ -12,13 +12,10 @@
 */
 
 Route::get('/', function () {
-    $plans = \App\Plan::all();
-
-    return view('welcome', compact('plans'));
+    return redirect('/home');
 });
-
-Route::post('subscribe', 'SubscriptionController@store');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+Route::post('subscribe', 'SubscriptionController@store')->middleware('auth');

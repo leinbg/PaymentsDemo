@@ -8,16 +8,17 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Payments</title>
 
     <!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">
 
     <!-- Scripts -->
     <script>
-        window.Laravel = <?php echo json_encode([
-            'csrfToken' => csrf_token(),
-        ]); ?>
+        var myApp = {
+            "csrfToken" : "{{ csrf_token() }}",
+            "stripeKey" : "{{ config('services.stripe.key') }}"
+        };
     </script>
 </head>
 <body>
@@ -82,6 +83,7 @@
     </div>
 
     <!-- Scripts -->
+    <script src="https://checkout.stripe.com/checkout.js"></script>
     <script src="/js/app.js"></script>
 </body>
 </html>
