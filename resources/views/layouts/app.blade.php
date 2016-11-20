@@ -15,10 +15,11 @@
 
     <!-- Scripts -->
     <script>
-        var myApp = {
-            "csrfToken" : "{{ csrf_token() }}",
-            "stripeKey" : "{{ config('services.stripe.key') }}"
-        };
+        window.myApp = <?php echo json_encode([
+            'csrfToken' => csrf_token(),
+            'stripeKey' => config('services.stripe.key'),
+            'user' => auth()->user(),
+        ]); ?>
     </script>
 </head>
 <body>
