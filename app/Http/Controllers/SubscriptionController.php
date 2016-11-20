@@ -33,8 +33,10 @@ class SubscriptionController extends Controller
             return response()->json(['message' => $e->getMessage()], 422);
         }
 
-        // create user
+        $request->user()->activateStripe($customer->id);
 
-        // redirect
+        return [
+            'message' => 'success'
+        ];
     }
 }

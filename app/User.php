@@ -26,4 +26,15 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * @param $customerId
+     */
+    public function activateStripe($customerId)
+    {
+        return $this->update([
+            'stripe_id' => $customerId,
+            'stripe_active' => true,
+        ]);
+    }
 }
