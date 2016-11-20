@@ -8,21 +8,8 @@
     <body>
         <form id="checkout-form" action="/purchase" method="POST">
             {{ csrf_field() }}
-            {{--<script--}}
-                {{--src="https://checkout.stripe.com/checkout.js" class="stripe-button"--}}
-                {{--data-key="{{ config('services.stripe.key') }}"--}}
-                {{--data-amount="2000"--}}
-                {{--data-name="Buy this shoe"--}}
-                {{--data-description="super christmas discount for this shoe"--}}
-                {{--data-locale="auto"--}}
-                {{--data-zip-code="true"--}}
-                {{--data-currency="eur"--}}
-            {{-->--}}
-            {{--</script>--}}
-
             <input type="hidden" id="stripeToken" name="stripeToken">
             <input type="hidden" id="stripeEmail" name="stripeEmail">
-            
             <button class="purchase-shoe">buy this shoe</button>
         </form>
 
