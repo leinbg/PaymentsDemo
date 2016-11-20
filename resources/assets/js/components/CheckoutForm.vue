@@ -2,6 +2,12 @@
     <form action="/purchase" method="POST" id="checkout-form">
         <input type="hidden" name="stripeToken" v-model="stripeToken">
         <input type="hidden" name="stripeEmail" v-model="stripeEmail">
+        <select name="product" v-model="product">
+            <option v-for="product in products" :value="product.id">
+                {{ product.title }} &mdash; {{ product.price / 100 }} Euro
+            </option>
+        </select>
+
         <button type="submit" @click.prevent="purchase">buy this shoe</button>
     </form>
 </template>
@@ -35,13 +41,19 @@
 
         methods: {
             purchase () {
+                var product = this.findProductById(this.product);
+
                 this.stripe.open({
-                    name: "Buy This Shoe",
-                    description: "super christmas discount for this shoe",
+                    name: product.title,
+                    description: product.description,
                     zipCode: true,
                     currency: "eur",
-                    amount: 2000
+                    amount: product.price
                 });
+            },
+
+            findProductById (id) {
+                return this.products.find(product => product.id == id);
             }
         }
     }

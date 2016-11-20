@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Product;
 use Illuminate\Http\Request;
 use Stripe\Charge;
 use Stripe\Customer;
@@ -27,12 +28,12 @@ class PurchaseController extends Controller
             'source'  => $request->stripeToken,
         ));
 
+        $product = Product::findOrFail($request->product);
+
         Charge::create(array(
             'customer' => $customer->id,
-            'amount'   => 2000,
+            'amount'   => $product->price,
             'currency' => 'eur'
         ));
-
-        echo '<h1>Successfully charged $20.00!</h1>';
     }
 }
