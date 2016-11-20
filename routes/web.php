@@ -18,3 +18,7 @@ Route::get('/', function () {
 });
 
 Route::post('subscribe', 'SubscriptionController@store');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');
