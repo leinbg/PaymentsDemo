@@ -7,9 +7,17 @@ use Stripe\Charge;
 use Stripe\Customer;
 use Stripe\Stripe;
 
+/**
+ * Class PurchaseController
+ *
+ * @package App\Http\Controllers
+ */
 class PurchaseController extends Controller
 {
 
+    /**
+     * @param Request $request
+     */
     public function store(Request $request)
     {
         Stripe::setApiKey(config('services.stripe.secret'));
@@ -21,10 +29,10 @@ class PurchaseController extends Controller
 
         Charge::create(array(
             'customer' => $customer->id,
-            'amount'   => 5000,
+            'amount'   => 2000,
             'currency' => 'eur'
         ));
 
-        echo '<h1>Successfully charged $50.00!</h1>';
+        echo '<h1>Successfully charged $20.00!</h1>';
     }
 }
