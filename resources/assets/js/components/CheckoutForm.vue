@@ -9,6 +9,8 @@
         </select>
 
         <button type="submit" @click.prevent="purchase">buy this shoe</button>
+
+        <p class="fail response" v-show="status" v-text="status"></p>
     </form>
 </template>
 
@@ -21,6 +23,7 @@
                 'stripeToken' : '',
                 'stripeEmail' : '',
                 'product' : 1,
+                'status': '',
             };
         },
 
@@ -34,7 +37,10 @@
                     this.stripeEmail = token.email;
 
                     this.$http.post('/purchase', this.$data)
-                        .then(response => alert('Completed!'));
+                        .then(
+                            response => alert('Completed!'),
+                            response => this.status = response.body.message
+                        );
                 }
             });
         },
