@@ -1,14 +1,14 @@
 <template>
-    <form action="/purchase" method="POST" id="checkout-form">
+    <form action="/subscribe" method="POST" id="checkout-form">
         <input type="hidden" name="stripeToken" v-model="stripeToken">
         <input type="hidden" name="stripeEmail" v-model="stripeEmail">
-        <select name="product" v-model="product">
-            <option v-for="product in products" :value="product.id">
-                {{ product.title }} &mdash; {{ product.price / 100 }} Euro
+        <select name="plan" v-model="plan">
+            <option v-for="plan in plans" :value="plan.id">
+                {{ plan.name }} &mdash; {{ plan.price / 100 }} Euro
             </option>
         </select>
 
-        <button type="submit" @click.prevent="purchase">buy this shoe</button>
+        <button type="submit" @click.prevent="subscribe">Subscribe</button>
 
         <p class="fail response" v-show="status" v-text="status"></p>
     </form>
@@ -16,13 +16,13 @@
 
 <script>
     export default {
-        props: ['products'],
+        props: ['plans'],
 
         data () {
             return {
                 'stripeToken' : '',
                 'stripeEmail' : '',
-                'product' : 1,
+                'plan' : 1,
                 'status': '',
             };
         },
@@ -32,11 +32,12 @@
                 key: myApp.stripeKey,
                 image: "https://stripe.com/img/documentation/checkout/marketplace.png",
                 locale: "auto",
+                panelLabel: "Subscribe For",
                 token: (token) => {
                     this.stripeToken = token.id;
                     this.stripeEmail = token.email;
 
-                    this.$http.post('/purchase', this.$data)
+                    this.$http.post('/subscribe', this.$data)
                         .then(
                             response => alert('Completed!'),
                             response => this.status = response.body.message
@@ -46,20 +47,20 @@
         },
 
         methods: {
-            purchase () {
-                var product = this.findProductById(this.product);
+            subscribe () {
+                var plan = this.findPlanById(this.plan);
 
                 this.stripe.open({
-                    name: product.title,
-                    description: product.description,
+                    name: plan.name,
+                    description: plan.description,
                     zipCode: true,
                     currency: "eur",
-                    amount: product.price
+                    amount: plan.price
                 });
             },
 
-            findProductById (id) {
-                return this.products.find(product => product.id == id);
+            findPlanById (id) {
+                return this.plans.find(plan => plan.id == id);
             }
         }
     }
