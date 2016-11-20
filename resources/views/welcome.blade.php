@@ -20,8 +20,8 @@
                 image: "https://stripe.com/img/documentation/checkout/marketplace.png",
                 locale: "auto",
                 token: function (token) {
-                    document.querySelector('stripeToken').value = token.id;
-                    document.querySelector('stripeEmail').value = token.stripeEmail;
+                    document.querySelector('#stripeToken').value = token.id;
+                    document.querySelector('#stripeEmail').value = token.stripeEmail;
 
                     document.querySelector('#checkout-form').submit();
                 }
