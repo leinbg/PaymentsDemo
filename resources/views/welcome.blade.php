@@ -6,17 +6,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
-        <form action="/your-server-side-code" method="POST">
+        <form action="/purchase" method="POST">
+            {{ csrf_field() }}
             <script
-                    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                    data-key="pk_test_bUIjNwftvYW8ndwKtQ7yee1t"
-                    data-amount="2000"
-                    data-name="Demo Site"
-                    data-description="2 widgets"
-                    data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-                    data-locale="auto"
-                    data-zip-code="true"
-                    data-currency="eur">
+                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="{{ config('services.stripe.key') }}"
+                data-amount="2000"
+                data-name="Buy this shoe"
+                data-description="super chrismas discount for this shoe"
+                data-locale="auto"
+                data-zip-code="true"
+                data-currency="eur"
+            >
             </script>
         </form>
     </body>
