@@ -12,7 +12,9 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $products = \App\Product::all();
+
+    return view('welcome', compact('products'));
 });
 
 Route::post('purchase', 'PurchaseController@store');

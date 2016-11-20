@@ -8,10 +8,13 @@
 
 <script>
     export default {
+        props: ['products'],
+
         data () {
             return {
                 'stripeToken' : '',
-                'stripeEmail' : ''
+                'stripeEmail' : '',
+                'product' : 1,
             };
         },
 

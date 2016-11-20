@@ -13,7 +13,7 @@
     </head>
     <body>
         <div id="app">
-            <checkout-form></checkout-form>
+            <checkout-form :products="{{ $products }}"></checkout-form>
         </div>
 
         <script src="https://checkout.stripe.com/checkout.js"></script>
