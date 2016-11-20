@@ -32,6 +32,7 @@
                 key: myApp.stripeKey,
                 image: "https://stripe.com/img/documentation/checkout/marketplace.png",
                 locale: "auto",
+                email: myApp.user.email,
                 panelLabel: "Subscribe For",
                 token: (token) => {
                     this.stripeToken = token.id;

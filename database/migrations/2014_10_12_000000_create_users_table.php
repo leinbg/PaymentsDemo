@@ -18,6 +18,9 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('stripe_id')->nullable();
+            $table->string('stripe_active')->default(false);
+            $table->string('stripe_subscription_end_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
