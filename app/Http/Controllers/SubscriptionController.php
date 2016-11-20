@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Product;
+use App\Plan;
 use Illuminate\Http\Request;
-use Stripe\Charge;
-use Stripe\Customer;
-use Stripe\Stripe;
+use Stripe\{Customer, Stripe};
 
 /**
- * Class PurchaseController
+ * Class SubscriptionController
  *
  * @package App\Http\Controllers
  */
-class PurchaseController extends Controller
+class SubscriptionController extends Controller
 {
 
     /**
@@ -23,18 +21,13 @@ class PurchaseController extends Controller
     {
         Stripe::setApiKey(config('services.stripe.secret'));
 
-        $product = Product::findOrFail($request->product);
+        $plan = Plan::findOrFail($request->plan);
 
         try {
             $customer = Customer::create(array(
                 'email' => $request->stripeEmail,
                 'source'  => $request->stripeToken,
-            ));
-
-            Charge::create(array(
-                'customer' => $customer->id,
-                'amount'   => $product->price,
-                'currency' => 'eur'
+                'plan' => $plan->name,
             ));
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 422);

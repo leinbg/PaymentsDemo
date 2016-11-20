@@ -12,9 +12,10 @@
 */
 
 Route::get('/', function () {
-    $products = \App\Product::all();
-
-    return view('welcome', compact('products'));
+    return redirect('/home');
 });
 
-Route::post('purchase', 'PurchaseController@store');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');
+Route::post('subscribe', 'SubscriptionController@store')->middleware('auth');
