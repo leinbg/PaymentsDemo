@@ -23,17 +23,21 @@ class PurchaseController extends Controller
     {
         Stripe::setApiKey(config('services.stripe.secret'));
 
-        $customer = Customer::create(array(
-            'email' => $request->stripeEmail,
-            'source'  => $request->stripeToken,
-        ));
-
         $product = Product::findOrFail($request->product);
 
-        Charge::create(array(
-            'customer' => $customer->id,
-            'amount'   => $product->price,
-            'currency' => 'eur'
-        ));
+        try {
+            $customer = Customer::create(array(
+                'email' => $request->stripeEmail,
+                'source'  => $request->stripeToken,
+            ));
+
+            Charge::create(array(
+                'customer' => $customer->id,
+                'amount'   => $product->price,
+                'currency' => 'eur'
+            ));
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 422);
+        }
     }
 }
