@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'stripe_id', 'stripe_active', 'stripe_subscription_end_at'
     ];
 
     /**
@@ -26,4 +26,15 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * @param $customerId
+     */
+    public function activateStripe($customerId)
+    {
+        return $this->update([
+            'stripe_id' => $customerId,
+            'stripe_active' => true,
+        ]);
+    }
 }
