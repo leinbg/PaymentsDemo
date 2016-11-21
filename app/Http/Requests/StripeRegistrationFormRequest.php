@@ -33,7 +33,7 @@ class StripeRegistrationFormRequest extends FormRequest
         return [
             'stripeEmail' => 'required|email',
             'stripeToken' => 'required',
-            'plan' => 'required|in:monthly,yearly'
+            'plan' => 'required'
         ];
     }
 
