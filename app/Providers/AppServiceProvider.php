@@ -3,7 +3,13 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Stripe\Stripe;
 
+/**
+ * Class AppServiceProvider
+ *
+ * @package App\Providers
+ */
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -13,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Stripe::setApiKey(config('services.stripe.secret'));
     }
 
     /**
