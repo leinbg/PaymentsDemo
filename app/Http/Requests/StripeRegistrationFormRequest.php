@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use App\Plan;
 use Illuminate\Foundation\Http\FormRequest;
-use Stripe\Customer;
 
 /**
  * Class StripeRegistrationFormRequest
@@ -44,12 +43,8 @@ class StripeRegistrationFormRequest extends FormRequest
     {
         $plan = Plan::findOrFail($this->plan);
 
-        $customer = Customer::create(array(
-            'email' => $this->stripeEmail,
-            'source'  => $this->stripeToken,
-            'plan' => $plan->name,
-        ));
-
-        $this->user()->activateStripe($customer->id);
+        $this->user()
+             ->subscription()
+             ->createUser($this->stripeToken, $plan);
     }
 }
