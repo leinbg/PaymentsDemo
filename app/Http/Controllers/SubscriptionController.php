@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Plan;
-use Illuminate\Http\Request;
-use Stripe\{Customer, Stripe};
+use App\Http\Requests\StripeRegistrationFormRequest;
 
 /**
  * Class SubscriptionController
@@ -15,25 +13,17 @@ class SubscriptionController extends Controller
 {
 
     /**
-     * @param Request $request
+     * @param StripeRegistrationFormRequest $request
+     *
+     * @return array|\Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(StripeRegistrationFormRequest $request)
     {
-        Stripe::setApiKey(config('services.stripe.secret'));
-
-        $plan = Plan::findOrFail($request->plan);
-
         try {
-            $customer = Customer::create(array(
-                'email' => $request->stripeEmail,
-                'source'  => $request->stripeToken,
-                'plan' => $plan->name,
-            ));
+            $request->save();
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 422);
         }
-
-        $request->user()->activateStripe($customer->id);
 
         return [
             'message' => 'success'
