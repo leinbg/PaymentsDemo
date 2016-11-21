@@ -5,6 +5,11 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+/**
+ * Class User
+ *
+ * @package App
+ */
 class User extends Authenticatable
 {
     use Notifiable;
@@ -29,6 +34,8 @@ class User extends Authenticatable
 
     /**
      * @param $customerId
+     *
+     * @return bool
      */
     public function activateStripe($customerId)
     {
@@ -36,5 +43,13 @@ class User extends Authenticatable
             'stripe_id' => $customerId,
             'stripe_active' => true,
         ]);
+    }
+
+    /**
+     * get subscription class for the user
+     */
+    public function subscription()
+    {
+        return new Subscription($this);
     }
 }
