@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -42,6 +43,15 @@ class User extends Authenticatable
         return $this->update([
             'stripe_id' => $customerId,
             'stripe_active' => true,
+            'stripe_subscription_end_at' => null,
+        ]);
+    }
+
+    public function deactivateStripe()
+    {
+        return $this->update([
+            'stripe_active' => false,
+            'stripe_subscription_end_at' => Carbon::now(),
         ]);
     }
 
