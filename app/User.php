@@ -71,4 +71,9 @@ class User extends Authenticatable
     {
         return new Subscription($this);
     }
+
+    public function isSubscript()
+    {
+        return !! $this->stripe_active && $this->stripe_subscription_end_at == NULL;
+    }
 }
