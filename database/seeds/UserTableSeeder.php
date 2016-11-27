@@ -16,6 +16,7 @@ class UserTableSeeder extends Seeder
             'email' => 'test@example.com',
             'password' => bcrypt('secret'),
             'stripe_id' => '',
+            'stripe_subscription_id' => '',
             'stripe_active' => false,
             'stripe_subscription_end_at' => '',
         ]);
