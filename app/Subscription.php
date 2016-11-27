@@ -3,6 +3,7 @@
 namespace App;
 
 use Stripe\Customer;
+use Stripe\Subscription as StripeSubscription;
 
 /**
  * Class Subscription
@@ -39,6 +40,13 @@ class Subscription
             'plan' => $plan->name,
         ]);
 
-        $this->user->activateStripe($customer->id);
+        $subscriptionId = $customer->subscriptions->data[0]->id;
+
+        $this->user->activateStripe($customer->id, $subscriptionId);
+    }
+
+    public function retrieve()
+    {
+        StripeSubscription::retrieve($this->user->stripe_subscription_id);
     }
 }
