@@ -47,6 +47,14 @@ class User extends Authenticatable
         ]);
     }
 
+    public function reactivateStripe()
+    {
+        return $this->update([
+            'stripe_active' => true,
+            'stripe_subscription_end_at' => null, 
+        ]);
+    }
+
     public function deactivateStripe()
     {
         return $this->update([
