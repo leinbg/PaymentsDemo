@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SubscriptionTest extends TestCase
 {
-	use DatabaseTransactions;
+	use DatabaseTransactions, StripeInfoGenerator;
 
     public function testUserSubscription()
     {
@@ -20,20 +20,14 @@ class SubscriptionTest extends TestCase
 		]);
 
         // When: I create a subscription for the user
-        $plan = new Plan(['name' => 'monthly']);
-        $token = Token::create([
-        	'card' => [
-        		'number' => '4242424242424242',
-        		'exp_month' => 3,
-        		'exp_year' => Carbon\Carbon::now()->addYear(3)->year,
-        		'cvc' => 123,
-        	]
-		]);
-		(new Subscription($user))->createUser($token, $plan);
+		(new Subscription($user))->createUser($this->getTestStripeToken(), $this->getTestPlan());
 
         // Then: they should have a subscription with stripe and be active in db
-        $user = $user->fresh();
-        $this->assertTrue(!! $user->stripe_active);
-        $this->assertNotNull($user->stripe_id);
+        $this->assertTrue($user->fresh()->isSubscript());
+        try {
+        	(new Subscription($user->fresh()))->retrieve();
+        } catch (\Exception $e) {
+        	$this->fail('can not fetch a stripe subscription');
+        }
     }
 }
