@@ -9,4 +9,6 @@ class Plan extends Model
     protected $casts = [
         'price' => 'integer',
     ];
+
+    protected $guarded = [];
 }
