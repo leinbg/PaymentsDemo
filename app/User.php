@@ -38,11 +38,12 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function activateStripe($customerId)
+    public function activateStripe($customerId, $subscriptionId)
     {
         return $this->update([
             'stripe_id' => $customerId,
             'stripe_active' => true,
+            'stripe_subscription_id' => $subscriptionId,
             'stripe_subscription_end_at' => null,
         ]);
     }
