@@ -25,7 +25,21 @@ class StripeWebhookController extends Controller
 
 	public function onCustomerSubscriptionDeleted($payload)
 	{
-		$user = User::where('stripe_id', $payload['data']['object']['customer'])->firstOrFail();
-		$user->deactivateStripe();
+		$this->retrieveUser($payload)->deactivateStripe();
+	}
+
+	public function onChargeSucceeded($payload)
+	{
+		$this->retrieveUser($payload)->payments()->create([
+			'amount' => $payload['data']['object']['amount'],
+			'charge_id' => $payload['data']['object']['id'],
+		]);	
+	}
+
+	protected function retrieveUser($payload)
+	{
+		return User::where(
+			'stripe_id', $payload['data']['object']['customer']
+		)->firstOrFail();
 	}
 }
