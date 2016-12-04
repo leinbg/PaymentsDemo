@@ -50,11 +50,12 @@ class User extends Authenticatable
         ]);
     }
 
-    public function deactivateStripe()
+    public function deactivateStripe($endDate = null)
     {
+        $endDate = $endDate ?: Carbon::now();
         return $this->update([
             'stripe_active' => false,
-            'stripe_subscription_end_at' => Carbon::now(),
+            'stripe_subscription_end_at' => $endDate,
         ]);
     }
 
