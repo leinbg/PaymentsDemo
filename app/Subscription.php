@@ -45,8 +45,24 @@ class Subscription
         $this->user->activateStripe($customer->id, $subscriptionId);
     }
 
-    public function retrieve()
+    public function cancel($atPeriodEnd = true)
     {
-        StripeSubscription::retrieve($this->user->stripe_subscription_id);
+        // cancel subsciption in stripe
+        $stripeCustomer = Customer::retrieve($this->user->stripe_id);
+        $subscription = $stripeCustomer->cancelSubscription(['at_period_end' => $atPeriodEnd]);
+
+        // cancel subscription in system
+        $endDate = \Carbon\Carbon::createFromTimestamp($subscription->current_period_end);
+        $this->user->deactivateStripe($endDate);
+    }
+
+    public function cancelImmediately()
+    {
+        $this->cancel(false);
+    }
+
+    public function retrieveStripeSubscription()
+    {
+        return StripeSubscription::retrieve($this->user->stripe_subscription_id);
     }
 }
