@@ -15,19 +15,29 @@ class SubscriptionTest extends TestCase
     public function testUserSubscription()
     {
         // Given: I have an active user
-		$user = factory(User::class)->create([
-			'stripe_active' => false,
-		]);
-
-        // When: I create a subscription for the user
-		(new Subscription($user))->createUser($this->getTestStripeToken(), $this->getTestPlan());
+		$user = $this->createStripeSubscriptionUser(['stripe_active' => false]);
 
         // Then: they should have a subscription with stripe and be active in db
-        $this->assertTrue($user->fresh()->isSubscript());
+        $user = $user->fresh();
+        $this->assertTrue($user->isSubscript());
         try {
-        	(new Subscription($user->fresh()))->retrieve();
+        	$user->subscription()->retrieve();
         } catch (\Exception $e) {
         	$this->fail('can not fetch a stripe subscription');
         }
+    }
+
+    public function testUserCancelSubscription()
+    {
+        
+    }
+
+    protected function createStripeSubscriptionUser($overrides = [])
+    {
+        $user = factory(User::class)->create($overrides);
+        // When: I create a subscription for the user
+        $user->subscription()->createUser($this->getTestStripeToken(), $this->getTestPlan());
+
+        return $user;
     }
 }
