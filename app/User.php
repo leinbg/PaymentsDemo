@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Payment;
 use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -68,5 +69,10 @@ class User extends Authenticatable
     public function isSubscript()
     {
         return !! $this->stripe_active && $this->stripe_subscription_end_at == NULL;
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
     }
 }
