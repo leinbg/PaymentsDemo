@@ -21,7 +21,7 @@ class SubscriptionTest extends TestCase
         $user = $user->fresh();
         $this->assertTrue($user->isSubscript());
         try {
-        	$user->subscription()->retrieve();
+        	$user->subscription()->retrieveStripeSubscription();
         } catch (\Exception $e) {
         	$this->fail('can not fetch a stripe subscription');
         }
@@ -29,7 +29,13 @@ class SubscriptionTest extends TestCase
 
     public function testUserCancelSubscription()
     {
-        
+        $user = $this->createStripeSubscriptionUser();
+        $user->subscription()->cancel();
+        $stripeSubscription = $user->subscription()->retrieveStripeSubscription();
+
+        $this->assertNotNull($stripeSubscription->canceled_at);
+        $this->assertFalse($user->isSubscript());
+        $this->assertNotNull($user->stripe_subscription_end_at);
     }
 
     protected function createStripeSubscriptionUser($overrides = [])
