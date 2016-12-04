@@ -29,4 +29,11 @@ class SubscriptionController extends Controller
             'message' => 'success'
         ];
     }
+
+    public function destroy()
+    {
+        auth()->user()->subscription()->cancel();
+
+        return back();
+    }
 }
